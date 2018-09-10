@@ -44,3 +44,5 @@ for ax in axes.flatten():
 # pass the figure to the custom window
 a = ScrollableWindow(fig)
 """
+
+#def create_error_figures(df,):

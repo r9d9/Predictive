@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
     #####################
     data = data.sample(1000)
-    data = data[["latitude","longitude","median_income","median_house_value"]]
+    #data = data[["latitude","longitude","median_income","median_house_value"]]
     ###################
 
     train_X, val_X, test_X, train_y, val_y, test_y = features.prep.split_train_val_test(data, "median_house_value",[0.6,0.2,0.2])
@@ -93,8 +93,7 @@ if __name__ == '__main__':
         k += 1
     print("alpha array:")
     print(alpha_array)
-    print("numnodes array:")
-    print(num_nodes_array)
+
     error_rates = pd.DataFrame(columns=["tree", "MSE", "RMSE", "R2", "RMSE % of mean", "Cali"])
     error_rates_tr = pd.DataFrame(columns=["tree", "MSE", "RMSE", "R2", "RMSE % of mean", "Cali"])
 
@@ -106,12 +105,14 @@ if __name__ == '__main__':
         new_row_tr = pd.concat([pd.Series(idx,name="tree"),evaluation.save_errors(train_y, pred_training)],axis=1)
         error_rates = error_rates.append(new_row,sort=False)
         error_rates_tr = error_rates_tr.append(new_row_tr,sort=False)
+
     print("sorted error rates for val:\n")
     err_sorted = error_rates.sort_values(["R2","RMSE"],ascending=[False,True])
     print(err_sorted)
     best_tree_nr = err_sorted.iloc[0,0]
-
     best_tree = tree_array[best_tree_nr]
+
+
     fig2, axes2 = plt.subplots(3,2,figsize=(10,12))
     ax2 = axes2.flatten()
     for col in error_rates.iloc[:,1:6].columns.values:
@@ -122,7 +123,6 @@ if __name__ == '__main__':
         ax2[axnr].legend()
         ax2[axnr].set_xlim([0, 0.6e+12])
         ax2[axnr].set_xlabel("alpha")
-
     fig2.tight_layout()
     a = viz.ScrollableWindow(fig2)
 

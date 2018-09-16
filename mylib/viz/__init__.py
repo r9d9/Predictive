@@ -31,7 +31,7 @@ class ScrollableWindow(QtWidgets.QMainWindow):
 
         self.show()
         #exit(self.qapp.exec_())
-        self.qapp.exec_() # this instead of the previous line makes the program continue after closing the windo
+        self.qapp.exec_() # this instead of the previous line makes the program continue after closing the window
 
 
 """example of usage:
@@ -45,4 +45,19 @@ for ax in axes.flatten():
 a = ScrollableWindow(fig)
 """
 
-#def create_error_figures(df,):
+def create_error_figures(error_df,error_df_tr,x_array,name,lim):
+    fig, axes = plt.subplots(3, 2, figsize=(10, 12))
+    ax = axes.flatten()
+    for col in error_df.iloc[:, 1:6].columns.values:
+        axnr = error_df.columns.get_loc(col) - 1
+        ax[axnr].set_title(col)
+        ax[axnr].scatter(x_array, error_df[col], label="val")
+        ax[axnr].scatter(x_array, error_df_tr[col], label="train")
+        ax[axnr].legend()
+        if lim == 1:
+            ax[axnr].set_xlim([0, 50])
+        ax[axnr].set_xlabel(name)
+    fig.tight_layout()
+    return fig
+    #plt.show()
+

@@ -8,7 +8,6 @@ from sklearn.tree import _tree
 class TreePruner:
     def __init__(self, grown_tree):
         self.trees = [grown_tree]
-        self.alpha_array = [0]
 
         num_nodes = self.trees[0].tree_.capacity
         self.parents = [-1] * num_nodes
@@ -27,7 +26,7 @@ class TreePruner:
 
             # determine alpha
             alpha_idx = self.gks.argmin()
-            self.alpha_array.append(self.gks[alpha_idx])
+
             # prune tree in alpha_idx
             self.prune(self.trees[k].tree_, alpha_idx)
 
